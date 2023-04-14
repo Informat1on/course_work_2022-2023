@@ -1,0 +1,84 @@
+<style>
+    #add-equipment {
+        position: absolute;
+        right: 0;
+    }
+</style>
+<div>
+    <button class="btn btn-outline-success" id="add-equipment" onclick="resetSelects()" data-bs-toggle="modal" data-bs-target="#addEquipmentPage">+ Добавить</button>
+</div>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Название</th>
+            <th scope="col">Инвентарный номер</th>
+            <th scope="col">Тип</th>
+            <th scope="col">Управление</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for equipment in all_equipment %}
+        <tr>
+          <th scope="row">{{ equipment.id }}</th>
+          <td class="col-3">{{ equipment.name }}</td>
+          <td class="col-3">{{ equipment.inv_number }}</td>
+          <td class="col-3">{{ equipment.type }}</td>
+          <td class="col-3"><button class="btn btn-outline-danger" onclick='deleteEquipment("{{ equipment.id }}")'>x</button></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal (add equipment) -->
+<div class="modal fade modal-m" id="addEquipmentPage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addEquipmentPageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addEquipmentPageLabel">Добавление оборудования</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="row mb-3">
+                <!-- Left column -->
+                <div class="col">
+                    <!-- Body of the modal -->
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            
+                            <!-- Name field -->
+                            <div class="mb-3">
+                                <label for="input-name" class="form-label">Название</label>
+                                <textarea class="form-control" id="input-name" rows="1"></textarea>
+                            </div>
+
+                            <!-- Inv. number field -->
+                            <div class="mb-3">
+                                <label for="input-inv" class="form-label">Инвентарный номер</label>
+                                <textarea class="form-control" id="input-inv" rows="1"></textarea>
+                            </div>
+
+                            <!-- Type -->
+                            <div class="col">
+                                <label for="formFileMultiple" class="form-label">Тип</label>
+                                <select class="form-select" aria-label="Default select example" id="type-select">
+                                    <option selected>Выберите тип</option>
+                                    {% for type in types %}
+                                    <option value="{{ type.id }}">{{ type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save-equipment" onclick="saveEquipmentToDb()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div> 

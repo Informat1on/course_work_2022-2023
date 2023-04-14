@@ -19,6 +19,7 @@ load_dotenv('../.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -29,6 +30,8 @@ SECRET_KEY = 'django-insecure-3*et=z*gyqy8e42udjf!-@-^hv^ays&*ovd-o*9xa0a46wkdqe
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# APPEND_SLASH=False
 
 ALLOWED_HOSTS = []
 
@@ -127,9 +130,15 @@ USE_TZ = True
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static/')
+print(STATIC_ROOT)
+STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'staticfiles'),
+        ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DATE_INPUT_FORMATS = ["%d/%m/%Y %H:%M:%S"]
+USE_L10N = False

@@ -1,0 +1,36 @@
+{% load static %}
+<style>
+    div#v-pills-tabContent {
+    width: 100%;
+    }
+
+    #container-applications {
+    width: 100%;
+    /* right: 30%; */
+    position: relative;
+}
+</style>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">№ заявки</th>
+        <th scope="col">Тема</th>
+        <th scope="col">Клиент</th>
+        <th scope="col">Ответственный</th>
+        <th scope="col">Статус</th>
+        <th scope="col">Управление</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for application in data %}
+      <tr>
+        <th scope="row"><a href="#" onclick="getApplicationFromDb('{{ application.id }}')">{{application.id}}</a></th>
+        <td>{{application.theme}}</td>
+        <td>{{application.client}}</td>
+        <td>{{application.worker}}</td>
+        <td>{{application.status}}</td>
+        <td>{{application.manage}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>

@@ -1,0 +1,88 @@
+<style>
+    #add-worker {
+        position: absolute;
+        right: 0;
+    }
+</style>
+<div>
+    <button class="btn btn-outline-success" id="add-worker" onclick="resetSelects()" data-bs-toggle="modal" data-bs-target="#addWorkerPage">+ Добавить</button>
+</div>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">ФИО</th>
+            <th scope="col">Должность</th>
+            <th scope="col">Роль</th>
+            <th scope="col">Управление</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for worker in all_workers %}
+        <tr>
+          <th scope="row">{{ worker.id }}</th>
+          <td class="col-3">{{ worker.fio }}</td>
+          <td class="col-3">{{ worker.position_name }}</td>
+          <td class="col-3">{{ worker.role_name }}</td>
+          <td class="col-3"><button class="btn btn-outline-danger" onclick='deleteWorker("{{ worker.id }}")'>x</button></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal (add worker) -->
+<div class="modal fade modal-m" id="addWorkerPage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addWorkerPageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addWorkerPageLabel">Добавление сотрудника</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="row mb-3">
+                <!-- Left column -->
+                <div class="col">
+                    <!-- Body of the modal -->
+                    <div class="modal-body">
+                        <div class="row mb-3">
+
+                            <!-- FIO field-->
+                            <div class="mb-3">
+                                <label for="input-fio" class="form-label">ФИО</label>
+                                <textarea class="form-control" id="input-fio" rows="1"></textarea>
+                            </div>
+
+                            <!-- Application type -->
+                            <div class="col">
+                                <label for="formFileMultiple" class="form-label">Должность</label>
+                                <select class="form-select" aria-label="Default select example" id="position-select">
+                                    <option selected>Выберите должность</option>
+                                    {% for position in positions %}
+                                    <option value="{{ position.id }}">{{ position.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Priority -->
+                            <div class="col">
+                                <label for="formFileMultiple" class="form-label">Роль</label>
+                                <select class="form-select" aria-label="Default select example" id="role-select">
+                                    <option selected>Выберите роль</option>
+                                    {% for role in roles %}
+                                    <option value="{{ role.id }}">{{ role.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save-worker" onclick="saveWorkerToDb()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div> 

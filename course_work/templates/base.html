@@ -1,26 +1,391 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <title>Okdesk by Arseniy</title>
-</head>
-<body>
-    <!-- TODO: сделать реализацию полей слева и сверху -->
 
-    <!-- Left buttons menu select -->
-    <button class="btn btn-outline-secondary btn-left">Тест</button>
-    <button class="btn btn-outline-secondary">Тест</button>
-    <button class="btn btn-outline-secondary">Тест</button>
-    <button class="btn btn-outline-secondary">Тест</button>
-    <button class="btn btn-outline-secondary">Тест</button>
-    {% block content %}
-    {% endblock %}
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}" crossorigin="anonymous"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}" crossorigin="anonymous"></script>
+    <script src="{% static 'js/fontawesome.js' %}" crossorigin="anonymous"></script>
+    <script src="{% static 'js/popper.min.js' %}" crossorigin="anonymous"></script>
+    <script src="{% static 'js/application_processing.js' %}" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- <link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+    <!-- <link rel="stylesheet" id="roboto-subset.css-css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5" type="text/css" media="all"> -->
+    
+    <title>Обработчик заявок</title>
+</head>
+
+<style>
+    .row-left {
+        height: 80px;
+        text-align: center;
+        /* transform: translateX(-7%) !important; */
+    }
+    
+    i {
+        font-size: x-large;
+    }
+    .row-upper {
+        border: 1px solid black;
+    }
+
+    .elem-left {
+        height: 60px;
+        text-align: center;
+    }
+
+    .profile-container {
+        display: grid;
+        position: relative;
+        left: 330%;
+    }
+
+    /* .con-addition {
+        margin-left: 15px;
+        height: 600px;
+    } */
+
+    .righ-form {
+        align-self: flex-end;
+    }
+
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        --mdb-nav-pills-link-active-bg: #e3ebf7;
+        --mdb-nav-pills-link-active-color: #285192;
+        background-color: var(--mdb-nav-pills-link-active-bg);
+        color: var(--mdb-nav-pills-link-active-color);
+    }
+
+    .nav-pills .nav-link {
+        --mdb-nav-pills-link-border-radius: 0.25rem;
+        --mdb-nav-pills-link-font-size: 11px;
+        --mdb-nav-pills-link-padding-top: 17px;
+        --mdb-nav-pills-link-padding-bottom: 16px;
+        --mdb-nav-pills-link-padding-x: 29px;
+        --mdb-nav-pills-link-line-height: 1;
+        --mdb-nav-pills-link-hover-bg: #f7f7f7;
+        --mdb-nav-pills-link-font-weight: 500;
+        --mdb-nav-pills-link-color: rgba(0,0,0,0.55);
+        --mdb-nav-pills-margin: 0.5rem;
+        border-radius: var(--mdb-nav-pills-link-border-radius);
+        font-size: var(--mdb-nav-pills-link-font-size);
+        text-transform: uppercase;
+        padding: var(--mdb-nav-pills-link-padding-top) var(--mdb-nav-pills-link-padding-x) var(--mdb-nav-pills-link-padding-bottom) var(--mdb-nav-pills-link-padding-x);
+        line-height: var(--mdb-nav-pills-link-line-height);
+        background-color: var(--mdb-nav-pills-link-hover-bg);
+        font-weight: var(--mdb-nav-pills-link-font-weight);
+        color: var(--mdb-nav-pills-link-color);
+        margin: var(--mdb-nav-pills-margin);
+        transform: translateX(-10%);
+    }
+
+    div#v-pills-tab {
+        position: relative;
+        right: 0.4%;
+        top: -8px;
+        width: 9%;
+    }
+
+    /* #container-applications {
+        width: 956%;
+        right: 30%;
+        position: relative;
+    } */
+
+    a.navbar-brand.col-1 {
+        display: flex;
+        justify-content: space-evenly;
+        width: 9.6%;
+        position: relative;
+        left: 0.75%;
+    }
+
+    /* #add-application {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: center;
+    } */
+
+    #add-application {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: center;
+        position: absolute;
+    }
+
+    .profile-container {
+        display: inline-block;
+        position: relative;
+        left: 920%;
+    }
+
+    .fa-circle-plus {
+        font-size: large;
+    }
+
+    div#container-workers, div#container-clients,
+    div#container-equipment, div#container-reports{
+        width: 100%;
+        position: relative;
+        /* margin-left: -21%; */
+    }
+
+    span#applications-amount {
+        position: absolute;
+        transform: translate(-15px, -40px);
+    }
+
+    /* top navbar */
+    nav.navbar.navbar-expand-lg.navbar-light {
+        height: 50px;
+    }
+
+    #liveAlertPlaceholder {
+        position: relative;
+        width: 400px;
+        transform: translate(1026px, -476px);
+    }
+
+    #bottom-container {
+        padding-right: 0px;
+    }
+
+    /* .alert.alert-success.alert-dismissible {
+    
+} */
+
+</style>
+
+<script>    
+    function getToThePage(pageName) {
+        $.ajax({
+            url: `/${pageName}`,         /* Куда отправить запрос */
+            method: 'get',             /* Метод запроса (post или get) */
+            dataType: 'html',          /* Тип данных в ответе (xml, json, script, html). */
+            data: {text: 'Текст'},     /* Данные передаваемые в массиве */
+            success: function(data){   /* функция которая будет выполнена после успешного запроса.  */
+                $(`#container-${pageName}`).html(data);
+                // alert(data); /* В переменной data содержится ответ от index.php. */
+            }
+        });
+    }
+
+    window.onload = function() {
+        getToThePage('applications'); // загружаю при старте окно заявок
+
+        $('button[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+        const targetId = e.target.id; // newly activated tab
+        console.log(targetId)
+        getToThePage(targetId);
+        e.relatedTarget // previous active tab
+        })
+
+        const toastTrigger = document.getElementById('save-application')
+        const toastLiveExample = document.getElementById('liveToast')
+        if (toastTrigger) {
+        toastTrigger.addEventListener('click', () => {
+            const toast = new bootstrap.Toast(toastLiveExample)
+
+            toast.show()
+        })
+        }
+    }
+    
+</script>
+
+<body>
+    
+    <!-- Main cpntainer -->
+    <div class="container-fluid border rounded border-dark main-container">
+        
+        <!-- Top bar -->
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+            <a class="navbar-brand col-1" href="#"><i class="fa-solid fa-hotel"></i>ОЗ<small disabled> Химик</small></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <button class="btn btn-outline-success" id="add-application" data-bs-toggle="modal" data-bs-target="#staticBackdrop,#staticBackdrop1"><i class="fa-solid fa-circle-plus"></i><a>Добавить заявку</a></button>
+                    <div class="profile-container"><a id="user-name">Щербак А.</a><img height="40px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_h0i8N0Iua1yo4Ptz03F92m4ZaOlmy8m_wMF8Bkc&s"></div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Bottom container -->
+        <div class="container-fluid border border-danger rounded" id="bottom-container">
+            
+            <div class="d-flex align-items-start">
+                <!-- Left bar -->
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <button class="nav-link active" id="applications" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fa-regular fa-bell"></i><br><br>Заявки<span class="badge text-bg-secondary bg-danger" id="applications-amount">32</span></button>
+                  <button class="nav-link" id="workers" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false"><i class="fa-solid fa-person"></i><br><br>Сотрудники</button>
+                  <button class="nav-link" id="clients" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false"><i class="fa-solid fa-briefcase"></i><br><br>Контрагенты</button>
+                  <button class="nav-link" id="equipment" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="fa-solid fa-tachograph-digital"></i><br><br>Оборудовние</button>
+                  <button class="nav-link" id="reports" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa-solid fa-file-lines"></i><br><br>Отчеты</button>
+                </div>
+                <!-- Content containers -->
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+                        <div class="container-fluid border border-success rounded con-addition" id="container-applications">
+                            {% block content %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                  <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+                    <div class="container-fluid border border-success rounded con-addition" id="container-workers">
+                        
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">
+                    <div class="container-fluid border border-success rounded con-addition" id="container-clients">
+                        
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">
+                    <div class="container-fluid border border-success rounded con-addition" id="container-equipment">
+                        
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
+                    <div class="container-fluid border border-success rounded con-addition" id="container-reports">
+                        
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>            
+    </div>
+
+    <!-- Alert (Toast) -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <!-- <i class="fa-solid fa-square-check"></i> -->
+            <strong class="me-auto">Уведомление</strong>
+            <small>сейчас</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            Заявка под номером <b>#1245</b> создана
+          </div>
+        </div>
+      </div>
+  
+    <!-- Modal -->
+    <div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal header -->
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Добавление заявки</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="row mb-3">
+                    <!-- Left column -->
+                    <div class="col">
+                        <!-- Body of the modal -->
+                        <div class="modal-body">
+                            <div class="row mb-3">
+
+                                <!-- Application type -->
+                                <div class="col">
+                                    <label for="formFileMultiple" class="form-label">Тип заявки</label>
+                                    <select class="form-select" aria-label="Default select example" id="application-select">
+                                        <option selected>Выберите тип заявки</option>
+                                        <option value="1">Обслуживание</option>
+                                        <option value="2">Кастомная</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+
+                                <!-- Priority -->
+                                <div class="col">
+                                    <label for="formFileMultiple" class="form-label">Приоритет</label>
+                                    <select class="form-select" aria-label="Default select example" id="priority">
+                                        <option selected>Выберите приоритет</option>
+                                        <option value="1">Низкий</option>
+                                        <option value="2">Средний</option>
+                                        <option value="3">Высокий</option>
+                                        <option value="4">Наивысший</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Big description field -->
+                            <!-- <div class="input-group mb-3">
+                                <span class="input-group-text">Описание</span>
+                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                            </div> -->
+
+                            <!-- New version of edit field -->
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Описание</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"  id="description"></textarea>
+                            </div>
+
+                            <!-- File upload -->
+                            <div class="mb-3">
+                                <label for="formFileMultiple" class="form-label">Добавить файлы</label>
+                                <input class="form-control" type="file" id="formFileMultiple" multiple itemid="file-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right column(right side of the modal) -->
+                    <div class="col">
+                        <div class="modal-body">
+
+                            <label for="formFileMultiple" class="form-label">Клиент</label>
+                            <select class="form-select mb-3" aria-label="Default select example" id="client">
+                                <option selected>Выберите тип заявки</option>
+                                <option value="1">Обслуживание</option>
+                                <option value="2">Кастомная</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label for="formFileMultiple" class="form-label">Объект обслуживания</label>
+                            <select class="form-select mb-3" aria-label="Default select example" id="service-obj">
+                                <option selected>Выберите тип заявки</option>
+                                <option value="1">Обслуживание</option>
+                                <option value="2">Кастомная</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label for="formFileMultiple" class="form-label">Оборудование</label>
+                            <select class="form-select mb-3" aria-label="Default select example" id="hardware">
+                                <option selected>Выберите тип заявки</option>
+                                <option value="1">Обслуживание</option>
+                                <option value="2">Кастомная</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label for="formFileMultiple" class="form-label">Ответственный сотрудник</label>
+                            <select class="form-select mb-3" aria-label="Default select example" id="worker">
+                                <option selected>Выберите тип заявки</option>
+                                <option value="1">Обслуживание</option>
+                                <option value="2">Кастомная</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save-application" onclick="saveApplicationToDb()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+       
 </body>
 </html>
